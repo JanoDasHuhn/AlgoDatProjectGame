@@ -1,11 +1,20 @@
+import rooms.Room;
+import rooms.RoomManager;
+
 import java.util.Scanner;
 
 public class GameLoop {
+   static RoomManager roomManager;
 
 
     public static void main(String[] args) {
+        roomManager = new RoomManager();
+
         while (true){
+            Room chosenRoom = roomManager.getRandomRoom();
+
             System.out.println("Das Spiel beginnt!");
+            System.out.println(chosenRoom.getDescription());
             System.out.println("Was willst du machen? (1) rennen (2) reden (3)kämpfen (4) stehlen");
 
             Scanner scanner = new Scanner(System.in);
