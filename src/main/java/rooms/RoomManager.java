@@ -12,7 +12,7 @@ public class RoomManager {
         generateRooms();
     }
     private void generateRooms(){
-        rooms.add(new Room("Mensa","Du endeckst eine alte Mensa! vielleicht wirst du hier was essbares finden!",RoomType.GOOD));
+        rooms.add(new Room("Mensa","Du endeckst eine alte Mensa! vielleicht wirst du hier was Essbares finden!",RoomType.GOOD));
         rooms.add(new Room("Zellenblock","Du findest einen alten Zellenblock! Hier steckt schon lange keiner mehr fest.",RoomType.NEUTRAL));
         rooms.add(new Room("Wartungsstation","Eine Alte Roboter Wartestation erscheint! Sei auf der Hut....",RoomType.BAD));
 
