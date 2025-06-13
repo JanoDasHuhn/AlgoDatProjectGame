@@ -1,14 +1,29 @@
+import Seedstuff.Seedreader;
 import rooms.Room;
 import rooms.RoomManager;
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class GameLoop {
    static RoomManager roomManager;
+   static Seedreader seedreader;
+
 
 
     public static void main(String[] args) {
         roomManager = new RoomManager();
+        seedreader = new Seedreader();
+
+
+        Random random = new Random();
+        int randomInt = random.nextInt(32768);
+        seedreader.setPosition(randomInt);
+
+        seedreader.setPosition(1);
+        seedreader.fiftyfiftyreader();
+        seedreader.hundredreader();
+        seedreader.zeroninereader();
 
         while (true){
             Room chosenRoom = roomManager.getRandomRoom();
