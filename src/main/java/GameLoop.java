@@ -1,4 +1,8 @@
 
+import encounters.Encounter;
+import encounters.EncounterManager;
+import encounters.Entity;
+import encounters.EntityType;
 import inventar.InventarManager;
 import inventar.items.ItemManager;
 import inventar.items.Rarity;
@@ -22,46 +26,69 @@ public class GameLoop {
 
    static InventarManager inventarManager;
    static ItemManager itemManager;
-
+   static EncounterManager encounterManager;
     public static void main(String[] args) {
         roomManager = new RoomManager();
         inventarManager = new InventarManager();
         itemManager = new ItemManager();
+        encounterManager = new EncounterManager();
         addItems();
+
+        addEncounters();
 
         while (true){
             Room chosenRoom = roomManager.getRandomRoom();
 
             System.out.println("Das Spiel beginnt!");
             System.out.println(chosenRoom.getDescription());
-            System.out.println("Was willst du machen? (1) rennen (2) reden (3)Item Aufheben (4) Inventar anschauen");
+            handleEncounter();
 
-            Scanner scanner = new Scanner(System.in);
-            String eingabe = scanner.nextLine();
-            if(eingabe.isEmpty()){
-                continue;
-
-            }
-            if(Integer.parseInt(eingabe) == 0){
-                continue;
-            }
-            switch (Integer.parseInt(eingabe)){
-                case 1: System.out.println("Du rennst!");
-                    break;
-                case 2: System.out.println("Du redest!");
-                    break;
-                case 3:
-                    inventarManager.addItem(itemManager.getItem(new Random().nextInt(0,itemManager.getAllItems().size())));
-                    System.out.println("Schau in dein Inv");
-                    break;
-                case 4:
-                    System.out.println(inventarManager.listItems());
-                    break;
-                default:
-                    System.out.println("Falsche Eingabe");
-            }
         }
     }
+
+    private static void addEncounters() {
+        encounterManager.addEncounter(new Entity("Villager","Du findest einen Dorfbewohner",Rarity.COMMON,20, EntityType.GOOD,0, itemManager.getItem(2)));
+        encounterManager.addEncounter(new Entity("Böser Roboter","Ein Roboter erscheint und greift dich an",Rarity.RARE,20, EntityType.EVIL,0, itemManager.getItem(3)));
+        encounterManager.addEncounter(new Entity("Ratte","Eine Ratte erscheint, sie scheint dich nicht anzugreifen",Rarity.COMMON,20, EntityType.NEUTRAL,0, itemManager.getItem(10)));
+
+    }
+
+    private static void handleEncounter() {
+        Encounter encounter = encounterManager.getRandomEncounter();
+        System.out.println("\n");
+        System.out.println(encounter.getName() + "\n");
+        System.out.println(encounter.getDesc() + ".\n");
+
+        System.out.println("Was willst du machen?");
+        
+        System.out.println("Was willst du machen? (1) rennen (2) reden (3)Item Aufheben (4) Inventar anschauen");
+
+        Scanner scanner = new Scanner(System.in);
+        String eingabe = scanner.nextLine();
+        if(eingabe.isEmpty()){
+            return;
+
+        }
+        if(Integer.parseInt(eingabe) == 0){
+            return;
+        }
+        switch (Integer.parseInt(eingabe)){
+            case 1: System.out.println("Du rennst!");
+                break;
+            case 2: System.out.println("Du redest!");
+                break;
+            case 3:
+                inventarManager.addItem(itemManager.getItem(new Random().nextInt(0,itemManager.getAllItems().size())));
+                System.out.println("Schau in dein Inv");
+                break;
+            case 4:
+                System.out.println(inventarManager.listItems());
+                break;
+            default:
+                System.out.println("Falsche Eingabe");
+        }
+    }
+
     static void addItems(){
 
         itemManager.addItemToPool("Plasma Cutter", 3.2f, "Ein Hochpräzisionswerkzeug, das zu einer tödlichen Waffe umfunktioniert wurde.", Rarity.RARE, 45.0f, 1.2f, 0.95f);
