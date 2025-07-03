@@ -1,3 +1,4 @@
+
 import encounters.Encounter;
 import encounters.EncounterManager;
 import encounters.Entity;
@@ -5,14 +6,24 @@ import encounters.EntityType;
 import inventar.InventarManager;
 import inventar.items.ItemManager;
 import inventar.items.Rarity;
+
 import rooms.Room;
 import rooms.RoomManager;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Random;
 
 public class GameLoop {
    static RoomManager roomManager;
+
+   static Seedreader seedreader;
+
+
+
+   
+       
+
    static InventarManager inventarManager;
    static ItemManager itemManager;
    static EncounterManager encounterManager;
@@ -22,7 +33,9 @@ public class GameLoop {
         itemManager = new ItemManager();
         encounterManager = new EncounterManager();
         addItems();
+
         addEncounters();
+
         while (true){
             Room chosenRoom = roomManager.getRandomRoom();
 
