@@ -1,14 +1,25 @@
+
 import inventar.InventarManager;
 import inventar.items.ItemManager;
 import inventar.items.Rarity;
+
 import rooms.Room;
 import rooms.RoomManager;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Random;
 
 public class GameLoop {
    static RoomManager roomManager;
+
+   static Seedreader seedreader;
+
+
+
+   
+       
+
    static InventarManager inventarManager;
    static ItemManager itemManager;
 
@@ -17,6 +28,7 @@ public class GameLoop {
         inventarManager = new InventarManager();
         itemManager = new ItemManager();
         addItems();
+
         while (true){
             Room chosenRoom = roomManager.getRandomRoom();
 
