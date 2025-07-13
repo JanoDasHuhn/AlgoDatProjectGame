@@ -7,17 +7,42 @@ import inventar.items.WeaponItem;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class InventarManager {
     private HashMap<Item,Integer> inventar;
     public InventarManager(){
         inventar = new HashMap<>();
     }
+    public WeaponItem weaponEquiped;
     public void addItem(Item item){
+        if(item instanceof WeaponItem){
+
+
+            System.out.println("Du findest die Waffe" + item.getName()+".");
+            System.out.println("Damage: " + ((WeaponItem) item).getDamage() + " Speed: " + ((WeaponItem) item).getSpeed() + " Accuracy: " + ((WeaponItem) item).getAccuracy());
+            System.out.println("Deine jetzige Waffe: " + weaponEquiped.getName() );
+            System.out.println("Damage: " + weaponEquiped.getDamage() + " Speed: " + weaponEquiped.getSpeed() + " Accuracy: " + weaponEquiped.getAccuracy ());
+            System.out.println("(0) " +weaponEquiped.getName() + " (1) " + item.getName());
+            Scanner scanner = new Scanner(System.in);
+            String eingabe = scanner.nextLine();
+            if(!Objects.equals(eingabe, "1")){
+                System.out.println("Du hast die Waffe nicht gewechselt!");
+                return;
+            }
+
+
+
+
+            weaponEquiped = (WeaponItem) item;
+            System.out.println("Du hast die Waffe " + item.getName() + " ausgerüstet.");
+        }
         if(inventar.containsKey(item)){
             inventar.put(item,inventar.get(item) +1);
             return;
         }
+
         inventar.put(item,1);
 
     }
@@ -62,5 +87,9 @@ public class InventarManager {
             string.append(interactiveItem.getRarity()).append(" ").append(interactiveItem.getName()).append(" ").append(interactiveItems.get(interactiveItem)).append("\n");
         }
         return string.toString();
+    }
+
+    public HashMap<Item, Integer> getInventar() {
+        return inventar;
     }
 }

@@ -5,15 +5,13 @@ import encounters.EncounterManager;
 import encounters.Entity;
 import encounters.EntityType;
 import inventar.InventarManager;
-import inventar.items.ItemManager;
-import inventar.items.Rarity;
+import inventar.items.*;
 
 import rooms.Room;
 import rooms.RoomManager;
 
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Random;
 
 public class GameLoop {
     static RoomManager roomManager;
@@ -25,6 +23,13 @@ public class GameLoop {
     static ItemManager itemManager;
     static EncounterManager encounterManager;
 
+
+
+   static InventarManager inventarManager;
+   static ItemManager itemManager;
+   static EncounterManager encounterManager;
+   static int health = 100;
+
     public static void main(String[] args) {
         roomManager = new RoomManager();
         inventarManager = new InventarManager();
@@ -35,17 +40,8 @@ public class GameLoop {
 
         addEncounters();
 
+
         System.out.println("Seed \n (andere Eingabe)generieren oder \n (1)eingeben?");
-        Scanner scanner = new Scanner(System.in);
-        String eingabe = scanner.nextLine();
-
-        if (eingabe.isEmpty()) {
-            return;
-
-        }
-        if (Integer.parseInt(eingabe) == 0) {
-            return;
-        }
         switch (Integer.parseInt(eingabe)) {
             case 1:
                 System.out.println("Bitte Seed (eine Zahl unter 30000) eingeben");
@@ -59,6 +55,122 @@ public class GameLoop {
                 int randomNumber = rand.nextInt(30000) + 1; // 1 bis 30000 (inklusive)
                 System.out.println("Seed: " + randomNumber);
                 break;
+        inventarManager.weaponEquiped = new WeaponItem("Hände",0.0f,Rarity.COMMON,"Deine bloßen Hände",5.0f,0.0f,0.9f);
+        while (true){
+            Room chosenRoom = roomManager.getRandomRoom();
+
+            System.out.println("Das Spiel beginnt!");
+            System.out.println(chosenRoom.getDescription());
+            handleEncounter();
+
+        }
+    }
+
+    private static void addEncounters() {
+        encounterManager.addEncounter(new Entity("Villager","Du findest einen Dorfbewohner",Rarity.COMMON,20, EntityType.GOOD,0, itemManager.getItem(2)));
+        encounterManager.addEncounter(new Entity("Böser Roboter","Ein Roboter erscheint und greift dich an",Rarity.RARE,20, EntityType.EVIL,2, itemManager.getItem(3)));
+        encounterManager.addEncounter(new Entity("Ratte","Eine Ratte erscheint, sie scheint dich nicht anzugreifen",Rarity.COMMON,100, EntityType.NEUTRAL,2, itemManager.getItem(10)));
+
+    }
+
+    private static void handleEncounter() {
+        Encounter encounter = encounterManager.getRandomEncounter();
+        System.out.println("\n");
+        System.out.println(encounter.getName() + "\n");
+        System.out.println(encounter.getDesc() + ".\n");
+
+        System.out.println("Was willst du machen?");
+        if(encounter instanceof Entity){
+            Entity entity = (Entity) encounter;
+            switch (entity.getEntityType()){
+                case GOOD:  handleGood(entity); break;
+                case NEUTRAL:  handleNeutral(entity); break;
+                case EVIL:  handleEvil(entity); break;
+            }
+        }
+
+
+
+    }
+
+    private static void handleEvil(Entity entity) {
+        fight(entity,entity.getHealth());
+    }
+
+    private static void gameOver() {
+        System.out.println("Du hast verloren");
+    }
+
+    private static void handleNeutral(Entity entity) {
+        System.out.println("(1) Ein Boost-Item anbieten (3) Kämpfen (2) Inventar anschauen");
+
+        Scanner scanner = new Scanner(System.in);
+        String eingabe = scanner.nextLine();
+
+        if (eingabe.isEmpty()) {
+            return;
+
+        }
+        if (Integer.parseInt(eingabe) == 0) {
+            return;
+        }
+
+        switch (Integer.parseInt(eingabe)){
+            case 1:
+                boolean foundBoost = false;
+                for (Item item : inventarManager.getInventar().keySet()){
+                    if(item instanceof BoostItem){
+                        System.out.println("Du gibt " + entity.getName() + " das Item " + item+ ".");
+                        inventarManager.subtractItem(item);
+                        System.out.println("Du darfst weiter gehen!");
+                        foundBoost = true;
+                        break;
+                    }
+                }
+                if(foundBoost == false){
+                    System.out.println("Du hast leider keine Boost Items.");
+                    fight(entity,entity.getHealth());
+                }
+
+                return;
+
+            case 2:
+                System.out.println(inventarManager.listItems());
+                handleGood(entity);
+                break;
+            default:
+                System.out.println("Falsche Eingabe");
+                handleGood(entity);
+        }
+    }
+
+    static void handleGood(Entity entity){
+        System.out.println("(1) Interagieren (2) Inventar anschauen");
+        Scanner scanner = new Scanner(System.in);
+        String eingabe = scanner.nextLine();
+        if(eingabe.isEmpty()){
+            return;
+
+        }
+        if(Integer.parseInt(eingabe) == 0){
+            return;
+        }
+        switch (Integer.parseInt(eingabe)){
+            case 1: System.out.println("Du bekommst ein " + entity.getItem().getName() +".");
+                inventarManager.addItem(entity.getItem());
+                return;
+
+            case 2:
+                System.out.println(inventarManager.listItems());
+                handleGood(entity);
+                break;
+            default:
+                System.out.println("Falsche Eingabe");
+                handleGood(entity);
+        }
+
+    }
+
 
 
             while (true) {
@@ -153,4 +265,66 @@ public class GameLoop {
 
         }
     }
+    private static int calculateDamage(WeaponItem weaponItem){
+        int damage = 0;
+        damage += weaponItem.getDamage();
+        int extraDamage = (int) (damage * (weaponItem.getAccuracy() +1));
+        damage += new Random().nextInt(damage,extraDamage);
+        return damage;
+
+
+    }
+    private static void fight(Entity entity, int enemyHealthLeft){
+        System.out.println("(1) Kämpfen (2) Inventar anschauen");
+        Scanner scanner = new Scanner(System.in);
+        String eingabe = scanner.nextLine();
+        if(eingabe.isEmpty()){
+            fight(entity,enemyHealthLeft);
+            return;
+
+        }
+        if(Integer.parseInt(eingabe) == 0){
+            fight(entity,enemyHealthLeft);
+            return;
+        }
+        switch (Integer.parseInt(eingabe)){
+            case 1:
+                int damage = calculateDamage(inventarManager.weaponEquiped);
+                System.out.println("Du nutzt die Waffe " + inventarManager.weaponEquiped.getName() + ". ");
+                System.out.println("Du machst " + damage + " Schaden!");
+                enemyHealthLeft -= damage;
+                if (enemyHealthLeft <= 0){
+                    System.out.println("Du hast den Gegner " + entity.getName() + " vernichtet.");
+                    System.out.println("Du bekommst das Item " + entity.getItem().getName() + ".");
+                    inventarManager.addItem(entity.getItem());
+                    return;
+                }else {
+                    System.out.println("Der Gegner macht " + entity.getDamage() + " Schaden.");
+                    health-= entity.getDamage();
+                    System.out.println("Du hast noch " + health + " Leben übrig.");
+                    if(health <= 0){
+                        gameOver();
+                    }
+
+
+                    fight(entity,enemyHealthLeft);
+
+
+
+                }
+
+
+                return;
+
+            case 2:
+                System.out.println(inventarManager.listItems());
+                fight(entity,enemyHealthLeft);
+                break;
+            default:
+                System.out.println("Falsche Eingabe");
+                fight(entity,enemyHealthLeft);
+        }
+
+    }
+
 }
