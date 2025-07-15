@@ -71,6 +71,14 @@ public class GameLoop {
             encounterManager.addEncounter(new Entity("Villager", "Du findest einen Dorfbewohner", Rarity.COMMON, 20, EntityType.GOOD, 0, itemManager.getItem(2)));
             encounterManager.addEncounter(new Entity("Böser Roboter", "Ein Roboter erscheint und greift dich an", Rarity.RARE, 20, EntityType.EVIL, 2, itemManager.getItem(3)));
             encounterManager.addEncounter(new Entity("Ratte", "Eine Ratte erscheint, sie scheint dich nicht anzugreifen", Rarity.COMMON, 100, EntityType.NEUTRAL, 2, itemManager.getItem(10)));
+            encounterManager.addEncounter(new Entity("Straßengang-Mitglied", "Ein bewaffneter Typ mit Neonmaske stellt sich dir in den Weg", Rarity.UNCOMMON, 35, EntityType.EVIL, 2, itemManager.getItem(12)));
+            encounterManager.addEncounter(new Entity("Defekter Servitor", "Ein defekter Servitor taumelt auf dich zu, seine Systeme glühen rot", Rarity.COMMON, 25, EntityType.NEUTRAL, 1, itemManager.getItem(13)));
+            encounterManager.addEncounter(new Entity("Datenbroker", "Ein zwielichtiger Broker bietet dir gegen Bezahlung Informationen an", Rarity.RARE, 10, EntityType.NEUTRAL, 0, itemManager.getItem(14)));
+            encounterManager.addEncounter(new Entity("Cyber-Ninja", "Aus dem Schatten springt ein Cyber-Ninja mit Klingenarmen", Rarity.EPIC, 60, EntityType.EVIL, 4, itemManager.getItem(15)));
+            encounterManager.addEncounter(new Entity("Implantat-Schmuggler", "Ein Typ mit überladenem Cyberarm bietet dir ein Upgrade – gegen deinen Arm", Rarity.UNCOMMON, 20, EntityType.NEUTRAL, 1, itemManager.getItem(16)));
+            encounterManager.addEncounter(new Entity("Drohne der CorpSec", "Eine bewaffnete Überwachungsdrohne scannt dein Gesicht", Rarity.COMMON, 15, EntityType.EVIL, 2, itemManager.getItem(17)));
+            encounterManager.addEncounter(new Entity("Verirrter Hacker", "Ein Hacker erscheint plötzlich – sein Mind scheint halb im Netz gefangen zu sein", Rarity.RARE, 20, EntityType.NEUTRAL, 3, itemManager.getItem(18)));
+
 
         }
 
