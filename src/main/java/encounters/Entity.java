@@ -31,5 +31,10 @@ public class Entity extends Encounter{
     public int getHealth() {
         return health;
     }
+    public void boostStats(int boost){
+        //in arbeit
+
+
+    }
 
 }
