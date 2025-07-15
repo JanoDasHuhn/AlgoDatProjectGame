@@ -38,9 +38,10 @@ public class GameLoop {
         addEncounters();
 
 
-        System.out.println("Seed \n (andere Eingabe)generieren oder \n (1)eingeben?");
+        System.out.println("Seed (andere Eingabe)generieren oder (1)eingeben?");
         Scanner scanner = new Scanner(System.in);
         String eingabe = scanner.nextLine();
+        if(!eingabe.isEmpty()){
         switch (Integer.parseInt(eingabe)) {
             case 1:
                 System.out.println("Bitte Seed (eine Zahl unter 30000) eingeben");
@@ -53,7 +54,16 @@ public class GameLoop {
                 Random rand = new Random();
                 int randomNumber = rand.nextInt(30000) + 1; // 1 bis 30000 (inklusive)
                 System.out.println("Seed: " + randomNumber);
+                seedreader.setPosition(randomNumber);
                 break;
+        }}
+        else {
+            System.out.println("Seed wird generiert");
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(30000) + 1; // 1 bis 30000 (inklusive)
+            System.out.println("Seed: " + randomNumber);
+            seedreader.setPosition(randomNumber);
+
         }
         inventarManager.weaponEquiped = new WeaponItem("Hände", 0.0f, Rarity.COMMON, "Deine bloßen Hände", 5.0f, 0.0f, 0.9f);
             while (true) {
