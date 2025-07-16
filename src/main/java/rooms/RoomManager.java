@@ -26,10 +26,10 @@ public class RoomManager {
 
 
     }
-    public Room getRandomRoom(){
+    public Room getRandomRoom(int i){
         Random random = new Random();
-        int roomID = random.nextInt(0, rooms.size());
-        return rooms.get(roomID);
+
+        return rooms.get(i);
 
     }
 }

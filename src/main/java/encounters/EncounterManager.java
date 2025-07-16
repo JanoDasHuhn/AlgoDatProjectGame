@@ -26,20 +26,20 @@ public class EncounterManager {
         return encounters.get(i);
 
     }
-    private Encounter getRandomEncounterByType(RoomType roomType){
+    private Encounter getRandomEncounterByType(RoomType roomType,int index){
         switch (roomType){
             default:
             case NEUTRAL:
-                return encounterUtilByType(EntityType.NEUTRAL);
+                return encounterUtilByType(EntityType.NEUTRAL,index);
             case BAD:
-               return encounterUtilByType(EntityType.EVIL);
+               return encounterUtilByType(EntityType.EVIL,index);
             case GOOD:
-                return encounterUtilByType(EntityType.GOOD);
+                return encounterUtilByType(EntityType.GOOD,index);
         }
 
     }
-    public Encounter getRandomEncounter(RoomType roomType){
-        return getRandomEncounterByType(roomType);
+    public Encounter getRandomEncounter(RoomType roomType,int index){
+        return getRandomEncounterByType(roomType,index);
     }
 
     public void updateEnemies(int room) {
@@ -49,7 +49,7 @@ public class EncounterManager {
             }
         }
     }
-    private Encounter encounterUtilByType(EntityType entityType){
+    private Encounter encounterUtilByType(EntityType entityType,int index){
         List<Encounter> encounterList1 = new ArrayList<>();
         for (Encounter encounter : encounters){
             if(encounter instanceof Entity entity){
@@ -59,7 +59,7 @@ public class EncounterManager {
                 }
             }
         }
-        return encounterList1.get(new Random().nextInt(0,encounterList1.size()));
+        return encounterList1.get(index);
 
     }
 }
