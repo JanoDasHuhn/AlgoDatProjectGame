@@ -13,22 +13,37 @@ import rooms.RoomManager;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
-
+/**
+ * Main Klasse des Spieles
+ * @author Janis
+ */
 public class GameLoop {
+
+    /** Verwalter für alle Räume im Spiel */
     static RoomManager roomManager;
 
+    /** Verwalter für die Seed-basierten Zufallszahlen */
     static Seedreader seedreader;
 
-
+    /** Verwalter für das Inventar des Spielers */
     static InventarManager inventarManager;
+
+    /** Verwalter für alle Items im Spiel */
     static ItemManager itemManager;
+
+    /** Verwalter für alle Encounters im Spiel */
     static EncounterManager encounterManager;
 
+    /** Die aktuellen Lebenspunkte des Spielers */
+    static int health = 100;
 
-
-   static int health = 100;
+    /** Die aktuelle Raum-Nummer */
     static int room = 0;
+
+    /** Gibt an, ob das Spiel noch läuft */
     static boolean isRunning = true;
+
+    /**Main Methode die das Programm startet**/
     public static void main(String[] args) {
 
 
@@ -38,6 +53,8 @@ public class GameLoop {
 
 
     }
+    /**
+     * setup methode, bei spiel neustart wird sie ausgerufen**/
     private static void setup(){
         roomManager = new RoomManager();
         inventarManager = new InventarManager();
@@ -102,6 +119,10 @@ public class GameLoop {
 
     }
 
+        /**
+        füllt den encounterManager mit Encounters
+        * */
+
         private static void addEncounters () {
             encounterManager.addEncounter(new Entity("Dorfbewohner", "Du findest einen Dorfbewohner", Rarity.COMMON, 20, EntityType.GOOD, 0, itemManager.getItem(2)));
             encounterManager.addEncounter(new Entity("Sanfte MedBot", "Ein MedBot bietet dir eine kostenlose Behandlung an", Rarity.UNCOMMON, 50, EntityType.GOOD, 0, itemManager.getItem(4)));
@@ -138,7 +159,10 @@ public class GameLoop {
 
 
         }
-
+        /**
+        Dialog des encounters
+        @param chosenRoom Der Ausgewählte Room wo der Gegner bestimmt wird welcher "spawnen" soll
+        * */
         private static void handleEncounter (Room chosenRoom) {
             Encounter encounter = encounterManager.getRandomEncounter(chosenRoom.getRoomType(),seedreader.zeroninereader());
             System.out.println("\n");
@@ -164,17 +188,25 @@ public class GameLoop {
 
         }
 
-
+        /**
+        Mini Methode für Entities des Evil typs
+        @param entity Die Evil Entity
+        * */
         private static void handleEvil (Entity entity){
             fight(entity, entity.getHealth());
         }
-
+        /**
+        Beendet das Spiel und startet es neu
+        * */
         private static void gameOver () {
             System.out.println("Du hast verloren");
             isRunning = false;
             setup();
         }
-
+             /**
+            Methode für Entities des Neutral typs kpmmert sich um dialog Optionen
+            @param entity Die Neutral Entity
+            * */
         private static void handleNeutral (Entity entity){
             System.out.println("(1) Ein Boost-Item anbieten (2) Kämpfen (3) Inventar anschauen");
 
@@ -218,7 +250,10 @@ public class GameLoop {
                     handleNeutral(entity);
             }
         }
-
+     /**
+    Methode für Entities des Good typs kpmmert sich um dialog Optionen
+    @param entity Die Good Entity
+    * */
 
     static void handleGood(Entity entity) {
         System.out.println("(1) Interagieren (2) Inventar anschauen");
@@ -252,7 +287,9 @@ public class GameLoop {
 
 
 
-
+    /**
+   füllt den itemManager mit Items
+   * */
         static void addItems () {
 
             itemManager.addItemToPool("Plasma Cutter", 3.2f, "Ein Hochpräzisionswerkzeug, das zu einer tödlichen Waffe umfunktioniert wurde.", Rarity.RARE, 45.0f, 1.2f, 0.95f);
@@ -314,7 +351,11 @@ public class GameLoop {
 
 
         }
-
+    /**
+       berechnet Schaden anhand von Waffe
+       @param weaponItem die Waffe
+       @return den Schaden der Waffe
+       * */
     private static int calculateDamage(WeaponItem weaponItem){
         int damage = 0;
         damage += weaponItem.getDamage();
@@ -324,6 +365,12 @@ public class GameLoop {
 
 
     }
+    /**
+     * Kampf dialog Methode
+     * @param entity Die Entity die beämpft wird
+     * @param enemyHealthLeft Wie viel Leben die Entity übrig hat
+     *
+    **/
     private static void fight(Entity entity, int enemyHealthLeft){
         System.out.println("(1) Kämpfen (2) Inventar anschauen");
         Scanner scanner = new Scanner(System.in);
