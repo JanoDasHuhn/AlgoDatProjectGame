@@ -104,7 +104,7 @@ MIT License – siehe [`LICENSE`](LICENSE)
 ## Autor
 
 Janis – AlgoDat Projekt  
-GitHub: [JanoDasHuhn/AlgoDatProjectGame](https://github.com/JanoDasHuhn/AlgoDatProjectGame)
+GitHub: [JanoDasHuhn/](https://github.com/JanoDasHuhn/)
 
 ---
 
