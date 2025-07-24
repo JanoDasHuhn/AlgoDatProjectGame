@@ -106,5 +106,11 @@ MIT License – siehe [`LICENSE`](LICENSE)
 Janis – AlgoDat Projekt  
 GitHub: [JanoDasHuhn](https://github.com/JanoDasHuhn/)
 
+Lukas – AlgoDat Projekt  
+GitHub: [Cliggie](https://github.com/Cliggie/)
+
+
+
+
 ---
 
